@@ -2,15 +2,14 @@ import numpy
 class Basis():
 
     def __init__(self, dimensions):
-        if dimensions % 2 != 0:
-            raise Exception("InputError: Only even positive integers allowed!")
+        if (dimensions % 2 != 0) or (dimensions <=0) or (type(dimensions) is not int):
+            raise Exception("Only positive even integers allowed!")
         else:
             self._dimensions = dimensions
 
     @property
     def dimension(self):
         return self._dimensions
-
 
     
 
