@@ -29,6 +29,16 @@ class Basis():
             second_index_vector = self.create_basis_vectors(second_index)
             matrix = 0.5*(np.outer(second_index_vector, first_index_vector) + np.outer(first_index_vector, second_index_vector))
             return matrix
+        
+    def create_single_antisymmetric_basis_matrix(self, first_index, second_index):
+        
+        if second_index >= first_index:
+            raise Exception("first_index must be larger than second_index!")
+        else:
+            first_index_vector = self.create_basis_vectors(first_index)
+            second_index_vector = self.create_basis_vectors(second_index)
+            matrix = -0.5j*(np.outer(second_index_vector, first_index_vector) - np.outer(first_index_vector, second_index_vector))
+            return matrix
 
     
 
