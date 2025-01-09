@@ -65,6 +65,15 @@ class Basis():
             for second_index in range(first_index)
         ]
 
+    def create_all_antisymmetric_basis_matrices(self):
+        
+        return [
+            self.create_single_antisymmetric_basis_matrix(first_index=first_index, second_index=second_index)
+            for first_index in range(1, self.dimension)
+            for second_index in range(first_index)
+        ]
+    
+
        
 
     
