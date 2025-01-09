@@ -41,7 +41,7 @@ class Basis():
             return matrix
 
     def create_single_diagonal_basis_matrix(self, index):
-        
+
         if index <= 0:
             raise Exception("Index must be greater than zero!")
         else:
@@ -57,10 +57,15 @@ class Basis():
             return coeff*matrix 
 
 
-    
+    def create_all_symmetric_basis_matrices(self):
+        
+        return [
+            self.create_single_symmetric_basis_matrix(first_index=first_index, second_index=second_index)
+            for first_index in range(1, self.dimension)
+            for second_index in range(first_index)
+        ]
 
-
-
+       
 
     
 
