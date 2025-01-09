@@ -2,8 +2,9 @@ import numpy as np
 class Basis():
 
     def __init__(self, dimensions):
-        if (dimensions % 2 != 0) or (dimensions <=0) or (type(dimensions) is not int):
-            raise Exception("Only positive even integers allowed!")
+        #if (dimensions % 2 != 0) or (dimensions <=0) or (type(dimensions) is not int):
+        if not (self.is_power_of_2(dimensions)) :
+            raise Exception("Must be a power of 2")
         else:
             self._dimensions = dimensions
 
@@ -11,7 +12,10 @@ class Basis():
     def dimension(self):
         return self._dimensions
 
-    
+    def is_power_of_2(self, x):
+        return x > 0 and (x & (x - 1)) == 0
+
+
     def create_basis_vectors(self, index):
         if index < 0: 
             raise Exception("Index can't be less than zero!")
