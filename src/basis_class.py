@@ -77,7 +77,12 @@ class Basis():
             for second_index in range(first_index)
         ]
     
+    def create_all_diagonal_basis_matrices(self):
 
+        return [
+            self.create_single_diagonal_basis_matrix(index=index)
+            for index in range(1,self.dimension)
+        ]
        
 
     
