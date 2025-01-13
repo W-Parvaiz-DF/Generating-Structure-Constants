@@ -7,6 +7,12 @@ class Basis():
             raise Exception("Must be a power of 2")
         else:
             self._dimensions = dimensions
+        
+        self._basis_matrices = self.full_pauli_matrix_basis()
+    
+    @property
+    def basis_matrices(self):
+        return self._basis_matrices
 
     @property
     def dimension(self):
@@ -84,6 +90,8 @@ class Basis():
             for index in range(1,self.dimension)
         ]
        
-
+    def full_pauli_matrix_basis(self):
+        return self.create_all_symmetric_basis_matrices() + self.create_all_antisymmetric_basis_matrices() + self.create_all_diagonal_basis_matrices()
+    
     
 
