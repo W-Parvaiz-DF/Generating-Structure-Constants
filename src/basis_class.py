@@ -9,14 +9,14 @@ class Basis():
             self._dimensions = dimensions
         
         self._basis_matrices = self.full_pauli_matrix_basis()
-    
-    @property
-    def basis_matrices(self):
-        return self._basis_matrices
 
     @property
     def dimension(self):
         return self._dimensions
+    
+    @property
+    def basis_matrices(self):
+        return self._basis_matrices
 
     def is_power_of_2(self, x):
         return x > 0 and (x & (x - 1)) == 0
@@ -92,6 +92,11 @@ class Basis():
        
     def full_pauli_matrix_basis(self):
         return self.create_all_symmetric_basis_matrices() + self.create_all_antisymmetric_basis_matrices() + self.create_all_diagonal_basis_matrices()
-    
-    
+
+    def commutator(self, matrix_1, matrix_2):
+        return np.dot(matrix_1, matrix_2) - np.dot(matrix_2, matrix_1)
+
+    def anticommutator(self, matrix_1, matrix_2):
+        return np.dot(matrix_1, matrix_2) + np.dot(matrix_2, matrix_1)
+
 
