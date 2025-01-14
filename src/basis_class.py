@@ -2,13 +2,13 @@ import numpy as np
 class Basis():
 
     def __init__(self, dimensions):
-        #if (dimensions % 2 != 0) or (dimensions <=0) or (type(dimensions) is not int):
-        if not (self.is_power_of_2(dimensions)) :
-            raise Exception("Must be a power of 2")
+        
+        if  dimensions <= 0:
+            raise Exception("Must be a positive integer")
         else:
             self._dimensions = dimensions
         
-        self._basis_matrices = self.full_pauli_matrix_basis()
+        self._basis_matrices = self.full_general_matrix_basis()
 
     @property
     def dimension(self):
@@ -18,15 +18,15 @@ class Basis():
     def basis_matrices(self):
         return self._basis_matrices
 
-    def is_power_of_2(self, x):
-        return x > 0 and (x & (x - 1)) == 0
+    # def is_power_of_2(self, x):
+    #     return x > 0 and (x & (x - 1)) == 0
 
 
     def create_basis_vectors(self, index):
         if index < 0: 
             raise Exception("Index can't be less than zero!")
         else:
-            vector = np.zeros(self._dimensions)
+            vector = np.zeros(self.dimension)
             vector[index] = 1
         return vector
     
@@ -90,7 +90,7 @@ class Basis():
             for index in range(1,self.dimension)
         ]
        
-    def full_pauli_matrix_basis(self):
+    def full_general_matrix_basis(self):
         return self.create_all_symmetric_basis_matrices() + self.create_all_antisymmetric_basis_matrices() + self.create_all_diagonal_basis_matrices()
 
     def commutator(self, matrix_1, matrix_2):
@@ -99,4 +99,26 @@ class Basis():
     def anticommutator(self, matrix_1, matrix_2):
         return np.dot(matrix_1, matrix_2) + np.dot(matrix_2, matrix_1)
 
+
+    # def find_basis_matrix_with_same_mask(self, matrix):
+        
+    #     if np.all(matrix == 0):
+    #         return None
+    #     else:
+    #         matrix_mask = matrix!= 0 
+    #         candidates = []
+            
+    #         for basis_matrix in self.basis_matrices:
+    #             basis_matrix_mask = basis_matrix!=0
+    #             if np.array_equal(matrix_mask, basis_matrix_mask):
+    #                 candidates.append(basis_matrix)
+            
+    #         if len(candidates) == 0:
+    #             raise Exception("No candidate matrix found!")
+    #         # elif len(candidates) > 1:
+    #         #     raise Exception("Multiple candidates found!")
+    #         #for now shouldnt be needed since there should always be one candidate matrix
+    #         else:
+    #             return candidates[0]
+            
 
