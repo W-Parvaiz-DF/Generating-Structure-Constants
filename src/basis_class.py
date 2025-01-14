@@ -18,10 +18,6 @@ class Basis():
     def basis_matrices(self):
         return self._basis_matrices
 
-    # def is_power_of_2(self, x):
-    #     return x > 0 and (x & (x - 1)) == 0
-
-
     def create_basis_vectors(self, index):
         if index < 0: 
             raise Exception("Index can't be less than zero!")
