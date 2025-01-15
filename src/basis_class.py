@@ -89,11 +89,7 @@ class Basis():
     def full_general_matrix_basis(self):
         return self.create_all_symmetric_basis_matrices() + self.create_all_antisymmetric_basis_matrices() + self.create_all_diagonal_basis_matrices()
 
-    def commutator(self, matrix_1, matrix_2):
-        return np.dot(matrix_1, matrix_2) - np.dot(matrix_2, matrix_1)
-
-    def anticommutator(self, matrix_1, matrix_2):
-        return np.dot(matrix_1, matrix_2) + np.dot(matrix_2, matrix_1)
+   
 
 
     # def find_basis_matrix_with_same_mask(self, matrix):
