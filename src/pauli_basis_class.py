@@ -19,10 +19,16 @@ class Pauli_Basis():
             raise Exception("Must be a power of 2")
         else:
             self._dimension  = dimension
+        self._basis = self.pauli_basis_matrices()
+
 
     @property
     def dimension(self):
         return self._dimension 
+    
+    @property
+    def basis(self):
+        return self._basis
     
     def is_power_of_2(self, x):
          return x > 0 and (x & (x - 1)) == 0
