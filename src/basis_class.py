@@ -14,7 +14,7 @@ class Basis():
     def dimension(self):
         return self._dimensions
     
-    @property
+    @property_
     def basis_matrices(self):
         return self._basis_matrices
 

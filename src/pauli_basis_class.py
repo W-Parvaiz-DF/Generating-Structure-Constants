@@ -1,11 +1,13 @@
 import numpy as np
+from .utils import commutator, anticommutator
 
 class Pauli_Basis():
 
     su_2_identity = np.eye(2)
-    su_2_pauli_x = 0.5*np.array([[0,1],[1,0]])
-    su_2_pauli_y = 0.5*np.array([[0,-1j],[1j,0]])
-    su_2_pauli_z = 0.5*np.array([[1,0],[0,-1]])
+    #change coeffs later
+    su_2_pauli_x = (1/np.sqrt(2))*np.array([[0,1],[1,0]])
+    su_2_pauli_y = (1/np.sqrt(2))*np.array([[0,-1j],[1j,0]])
+    su_2_pauli_z = (1/np.sqrt(2))*np.array([[1,0],[0,-1]])
     building_block_matrices = [
                                 su_2_identity,
                                 su_2_pauli_x,
@@ -59,6 +61,8 @@ class Pauli_Basis():
             output_list.pop(0)
             return output_list
             
+    # def find_candidate_masks_from_basis(input_matrix):
+    #     return None
         
 
     
