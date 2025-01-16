@@ -5,9 +5,9 @@ class Pauli_Basis():
 
     su_2_identity = np.eye(2)
     #change coeffs later
-    su_2_pauli_x = (1/np.sqrt(2))*np.array([[0,1],[1,0]])
-    su_2_pauli_y = (1/np.sqrt(2))*np.array([[0,-1j],[1j,0]])
-    su_2_pauli_z = (1/np.sqrt(2))*np.array([[1,0],[0,-1]])
+    su_2_pauli_x = np.array([[0,1],[1,0]])
+    su_2_pauli_y = np.array([[0,-1j],[1j,0]])
+    su_2_pauli_z = np.array([[1,0],[0,-1]])
     building_block_matrices = [
                                 su_2_identity,
                                 su_2_pauli_x,
@@ -21,8 +21,9 @@ class Pauli_Basis():
             raise Exception("Must be a power of 2")
         else:
             self._dimension  = dimension
-        self._basis = self.pauli_basis_matrices()
-
+        self._basis = [
+                    self.coefficient() * matrix for matrix in self.pauli_basis_matrices_without_coefficient()
+                    ]
 
     @property
     def dimension(self):
@@ -48,7 +49,8 @@ class Pauli_Basis():
             output = self.tensor_product_list(output, list_2)
         return output
     
-    def pauli_basis_matrices(self):
+    def pauli_basis_matrices_without_coefficient(self):
+        #This is without the coefficients
         if self.dimension == 2:
             output_list = self.building_block_matrices.copy()
             output_list.pop(0)
@@ -61,9 +63,13 @@ class Pauli_Basis():
             output_list.pop(0)
             return output_list
             
-    # def find_candidate_masks_from_basis(input_matrix):
-    #     return None
-        
+    def coefficient(self):
+        #just doing for one since should be consistent for all of them
+        basis_matrix = self.pauli_basis_matrices_without_coefficient()[0]
+        return np.sqrt(1/np.trace(np.dot(basis_matrix,basis_matrix)))
+
+
+  
 
     
 
