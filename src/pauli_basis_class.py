@@ -1,5 +1,5 @@
 import numpy as np
-from .utils import commutator, anticommutator
+from .utils import commutator, anticommutator, find_matrix_mask
 
 class Pauli_Basis():
 
@@ -17,10 +17,11 @@ class Pauli_Basis():
 
     
     def __init__(self, dimension):
+        
         if not (self.is_power_of_2(dimension)) :
             raise Exception("Must be a power of 2")
-        else:
-            self._dimension  = dimension
+        
+        self._dimension  = dimension
         self._basis = [
                     self.coefficient() * matrix for matrix in self.pauli_basis_matrices_without_coefficient()
                     ]
@@ -68,11 +69,14 @@ class Pauli_Basis():
         basis_matrix = self.pauli_basis_matrices_without_coefficient()[0]
         return np.sqrt(1/np.trace(np.dot(basis_matrix,basis_matrix)))
 
-    def find_candidate_masks_from_basis(self, input_matrix):
+    def find_candidate_masks_from_basis(self, input_matrix_mask):
         
+        if input_matrix_mask.dtype != bool:
+            raise Exception("Input should be the mask of the commutated matrix")
+
         candidate_indices = []
 
-        input_matrix_mask = input_matrix !=0        
+        #input_matrix_mask = input_matrix !=0    #going to make this a utils function    
 
         for index in range(len(self.basis)):
             basis_mask = self.basis[index] !=0
