@@ -69,14 +69,11 @@ class Pauli_Basis():
         basis_matrix = self.pauli_basis_matrices_without_coefficient()[0]
         return np.sqrt(1/np.trace(np.dot(basis_matrix,basis_matrix)))
 
-    def find_candidate_masks_from_basis(self, input_matrix_mask):
+    def find_candidate_masks_from_basis(self, input_matrix):
         
-        if input_matrix_mask.dtype != bool:
-            raise Exception("Input should be the mask of the commutated matrix")
+        input_matrix_mask = find_matrix_mask(input_matrix=input_matrix)        
 
         candidate_indices = []
-
-        #input_matrix_mask = input_matrix !=0    #going to make this a utils function    
 
         for index in range(len(self.basis)):
             basis_mask = self.basis[index] !=0
@@ -85,8 +82,7 @@ class Pauli_Basis():
         
         if len(candidate_indices) == 0:
             raise Exception("No candidate basis matrices found!")
-
-
+        
         return candidate_indices
 
             
