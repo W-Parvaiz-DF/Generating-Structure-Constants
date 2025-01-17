@@ -69,9 +69,10 @@ class Pauli_Basis():
         basis_matrix = self.pauli_basis_matrices_without_coefficient()[0]
         return np.sqrt(1/np.trace(np.dot(basis_matrix,basis_matrix)))
 
-    def find_candidate_masks_from_basis(self, input_matrix):
+    def find_candidate_masks_from_basis(self, input_matrix_mask):
         
-        input_matrix_mask = find_matrix_mask(input_matrix=input_matrix)        
+        if input_matrix_mask.dtype != bool:
+            raise Exception("Input should be a matrix with boolean type elements!")
 
         candidate_indices = []
 
@@ -84,6 +85,17 @@ class Pauli_Basis():
             raise Exception("No candidate basis matrices found!")
         
         return candidate_indices
+
+    # def find_scale_factor_and_index(self, input_matrix, input_matrix_mask):
+        
+ 
+    #     candidate_list = self.find_candidate_masks_from_basis(input_matrix_mask)
+    #     scaling_factor = []
+        
+    #     for index in candidate_list:
+    #         scaling_factors = input_matrix[input_matrix_mask]/self.basis[index][input_matrix_mask]
+    #         if np.all(scaling_factors)
+
 
             
 
