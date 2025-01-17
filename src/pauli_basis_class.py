@@ -1,4 +1,5 @@
 import numpy as np
+from scipy.sparse import lil_matrix
 from .utils import commutator, anticommutator, find_matrix_mask
 
 class Pauli_Basis():
@@ -25,6 +26,13 @@ class Pauli_Basis():
         self._basis = [
                     self.coefficient() * matrix for matrix in self.pauli_basis_matrices_without_coefficient()
                     ]
+        
+        ##Removing these because not necessary and take up time to build on object initialisation especially for high dimensions
+        
+        # self._antisymmetric_structure_constants = self.build_antisymmetric_structure_constants()
+        # self._symmetric_structure_constants = self.build_symmetric_structure_constants()
+
+
 
     @property
     def dimension(self):
@@ -34,6 +42,18 @@ class Pauli_Basis():
     def basis(self):
         return self._basis
     
+   #Removing these because not necessary and take up time to build on object initialisation especially for high dimensions
+ 
+    
+    # @property
+    # def antisymmetric_structure_constants(self):
+    #     return self._antisymmetric_structure_constants
+
+    # @property
+    # def symmetric_structure_constants(self):
+    #     return self._symmetric_structure_constants
+    
+
     def is_power_of_2(self, x):
          return x > 0 and (x & (x - 1)) == 0
     
@@ -105,6 +125,62 @@ class Pauli_Basis():
         
         return scaling_factor[0], index_list[0]
         
+    def antisymmetric_structure_constants(self):
+        number_of_matrices = len(self.basis)
+        antisymmetric_structure_constants = [lil_matrix((number_of_matrices, number_of_matrices)) for _ in range(number_of_matrices)]
+        
+        for index_1 in range(number_of_matrices):
+            for index_2 in range(number_of_matrices):
+                
+                if index_1 == index_2:
+                    continue
+                
+                commutated_matrix = commutator(self.basis[index_1], self.basis[index_2])
+
+                if np.all(commutated_matrix == 0):
+                    continue
+
+                commutated_matrix_mask = find_matrix_mask(commutated_matrix)
+
+                scaling_factor, index_3 = self.find_scale_factor_and_index(input_matrix=commutated_matrix, 
+                                                                           input_matrix_mask= commutated_matrix_mask)
+                
+
+                antisymmetric_structure_constants[index_1][index_2, index_3] = scaling_factor/1j
+        return antisymmetric_structure_constants
+    
+
+    def symmetric_structure_constants(self):
+        number_of_matrices = len(self.basis)
+        symmetric_structure_constants = [lil_matrix((number_of_matrices, number_of_matrices)) for _ in range(number_of_matrices)]
+        
+        for index_1 in range(number_of_matrices):
+            for index_2 in range(number_of_matrices):
+                if index_1 == index_2:
+                    continue
+                
+                anticommutated_matrix = anticommutator(self.basis[index_1], self.basis[index_2])
+
+                if np.all(anticommutated_matrix == 0):
+                    continue
+                
+                anticommutated_matrix_mask = find_matrix_mask(anticommutated_matrix)
+                scaling_factor, index_3 = self.find_scale_factor_and_index(input_matrix=anticommutated_matrix, 
+                                                                           input_matrix_mask= anticommutated_matrix_mask)
+                
+                print("Before assignment index 1,2, 3 = ",index_1, index_2, index_3)
+                print("Scale factor = ", scaling_factor)
+                symmetric_structure_constants[index_1][index_2, index_3] = scaling_factor
+        
+        return symmetric_structure_constants
+
+                
+                
+
+            
+                
+
+
 
             
 
