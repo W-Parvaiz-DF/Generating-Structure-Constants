@@ -92,25 +92,6 @@ class Basis():
    
 
 
-    # def find_basis_matrix_with_same_mask(self, matrix):
-        
-    #     if np.all(matrix == 0):
-    #         return None
-    #     else:
-    #         matrix_mask = matrix!= 0 
-    #         candidates = []
-            
-    #         for basis_matrix in self.basis_matrices:
-    #             basis_matrix_mask = basis_matrix!=0
-    #             if np.array_equal(matrix_mask, basis_matrix_mask):
-    #                 candidates.append(basis_matrix)
-            
-    #         if len(candidates) == 0:
-    #             raise Exception("No candidate matrix found!")
-    #         # elif len(candidates) > 1:
-    #         #     raise Exception("Multiple candidates found!")
-    #         #for now shouldnt be needed since there should always be one candidate matrix
-    #         else:
-    #             return candidates[0]
+    
             
 
