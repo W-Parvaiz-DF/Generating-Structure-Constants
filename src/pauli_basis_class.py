@@ -26,7 +26,8 @@ class Pauli_Basis():
         self._basis = [
                     self.coefficient() * matrix for matrix in self.pauli_basis_matrices_without_coefficient()
                     ]
-        
+        self._number_of_matrices = len(self.basis)
+
         ##Removing these because not necessary and take up time to build on object initialisation especially for high dimensions
         
         # self._antisymmetric_structure_constants = self.build_antisymmetric_structure_constants()
@@ -41,6 +42,10 @@ class Pauli_Basis():
     @property
     def basis(self):
         return self._basis
+    
+    @property
+    def number_of_matrices(self):
+        return self._number_of_matrices
     
    #Removing these because not necessary and take up time to build on object initialisation especially for high dimensions
  
@@ -109,7 +114,6 @@ class Pauli_Basis():
     def find_scale_factor_and_index(self, input_matrix, input_matrix_mask):
 
         #note here the scale factor is root(2)* what is given on wikipedia, because there they dont use normalisation       
- 
         candidate_list = self.find_candidate_masks_from_basis(input_matrix_mask)
         scaling_factor = []
         index_list = []
@@ -126,11 +130,11 @@ class Pauli_Basis():
         return scaling_factor[0], index_list[0]
         
     def antisymmetric_structure_constants(self):
-        number_of_matrices = len(self.basis)
-        antisymmetric_structure_constants = [lil_matrix((number_of_matrices, number_of_matrices)) for _ in range(number_of_matrices)]
+        antisymmetric_structure_constants = [lil_matrix((self.number_of_matrices, self.number_of_matrices)) 
+                                             for _ in range(self.number_of_matrices)]
         
-        for index_1 in range(number_of_matrices):
-            for index_2 in range(number_of_matrices):
+        for index_1 in range(self.number_of_matrices):
+            for index_2 in range(self.number_of_matrices):
                 
                 if index_1 == index_2:
                     continue
@@ -151,11 +155,11 @@ class Pauli_Basis():
     
 
     def symmetric_structure_constants(self):
-        number_of_matrices = len(self.basis)
-        symmetric_structure_constants = [lil_matrix((number_of_matrices, number_of_matrices)) for _ in range(number_of_matrices)]
+        symmetric_structure_constants = [lil_matrix((self.number_of_matrices, self.number_of_matrices)) 
+                                         for _ in range(self.number_of_matrices)]
         
-        for index_1 in range(number_of_matrices):
-            for index_2 in range(number_of_matrices):
+        for index_1 in range(self.number_of_matrices):
+            for index_2 in range(self.number_of_matrices):
                 if index_1 == index_2:
                     continue
                 
@@ -168,13 +172,25 @@ class Pauli_Basis():
                 scaling_factor, index_3 = self.find_scale_factor_and_index(input_matrix=anticommutated_matrix, 
                                                                            input_matrix_mask= anticommutated_matrix_mask)
                 
-                print("Before assignment index 1,2, 3 = ",index_1, index_2, index_3)
-                print("Scale factor = ", scaling_factor)
                 symmetric_structure_constants[index_1][index_2, index_3] = scaling_factor
         
         return symmetric_structure_constants
 
-                
+    def complex_structure_constants(self, antisymmetric_structure_constants, symmetric_structure_constants):
+        
+        #the choice pass the symmetric and antisymmetric constant tensors as arguments is done so to improve performance 
+        # rather than calling them as functions internally. 
+
+        complex_structure_constants = [lil_matrix((self.number_of_matrices, self.number_of_matrices)) 
+                                             for _ in range(self.number_of_matrices)]
+        
+        
+
+        for index in range(self.number_of_matrices):
+            complex_structure_constants[index] = antisymmetric_structure_constants[index] + 1j*symmetric_structure_constants[index]
+        
+        return complex_structure_constants 
+           
                 
 
             
