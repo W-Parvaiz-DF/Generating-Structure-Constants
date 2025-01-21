@@ -5,7 +5,6 @@ from .utils import commutator, anticommutator, find_matrix_mask
 class Pauli_Basis():
 
     su_2_identity = np.eye(2)
-    #change coeffs later
     su_2_pauli_x = np.array([[0,1],[1,0]])
     su_2_pauli_y = np.array([[0,-1j],[1j,0]])
     su_2_pauli_z = np.array([[1,0],[0,-1]])
@@ -23,17 +22,10 @@ class Pauli_Basis():
             raise Exception("Must be a power of 2")
         
         self._dimension  = dimension
-        self._basis = [
-                    self.coefficient() * matrix for matrix in self.pauli_basis_matrices_without_coefficient()
-                    ]
+        self._coefficient = (1/np.sqrt(dimension))
+        self._basis = [self._coefficient* matrix for matrix in self.pauli_basis_matrices_without_coefficient()]
+                    
         self._number_of_matrices = len(self.basis)
-
-        ##Removing these because not necessary and take up time to build on object initialisation especially for high dimensions
-        
-        # self._antisymmetric_structure_constants = self.build_antisymmetric_structure_constants()
-        # self._symmetric_structure_constants = self.build_symmetric_structure_constants()
-
-
 
     @property
     def dimension(self):
@@ -47,17 +39,10 @@ class Pauli_Basis():
     def number_of_matrices(self):
         return self._number_of_matrices
     
-   #Removing these because not necessary and take up time to build on object initialisation especially for high dimensions
- 
-    
-    # @property
-    # def antisymmetric_structure_constants(self):
-    #     return self._antisymmetric_structure_constants
-
-    # @property
-    # def symmetric_structure_constants(self):
-    #     return self._symmetric_structure_constants
-    
+    @property
+    def coefficient(self):
+        return self._coefficient
+        
 
     def is_power_of_2(self, x):
          return x > 0 and (x & (x - 1)) == 0
@@ -76,7 +61,6 @@ class Pauli_Basis():
         return output
     
     def pauli_basis_matrices_without_coefficient(self):
-        #This is without the coefficients
         if self.dimension == 2:
             output_list = self.building_block_matrices.copy()
             output_list.pop(0)
@@ -89,10 +73,10 @@ class Pauli_Basis():
             output_list.pop(0)
             return output_list
             
-    def coefficient(self):
-        #just doing for one since should be consistent for all of them
-        basis_matrix = self.pauli_basis_matrices_without_coefficient()[0]
-        return np.sqrt(1/np.trace(np.dot(basis_matrix,basis_matrix)))
+    # def coefficient(self):
+    # 
+    #     basis_matrix = self.pauli_basis_matrices_without_coefficient()[0]
+    #     return np.sqrt(1/np.trace(np.dot(basis_matrix,basis_matrix)))
 
     def find_candidate_masks_from_basis(self, input_matrix_mask):
         
