@@ -160,18 +160,12 @@ class Pauli_Basis():
         
         return symmetric_structure_constants
 
-    def complex_structure_constants(self, antisymmetric_structure_constants, symmetric_structure_constants):
-        
-        #the choice pass the symmetric and antisymmetric constant tensors as arguments is done so to improve performance 
-        # rather than calling them as functions internally. 
-
+    def complex_structure_constants(self):
         complex_structure_constants = [lil_matrix((self.number_of_matrices, self.number_of_matrices)) 
                                              for _ in range(self.number_of_matrices)]
         
-        
-
         for index in range(self.number_of_matrices):
-            complex_structure_constants[index] = antisymmetric_structure_constants[index] + 1j*symmetric_structure_constants[index]
+            complex_structure_constants[index] = self.antisymmetric_structure_constants()[index] + 1j*self.symmetric_structure_constants()[index]
         
         return complex_structure_constants 
            
