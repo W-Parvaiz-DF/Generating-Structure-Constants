@@ -1,9 +1,10 @@
 import numpy as np
 from scipy.sparse import lil_matrix
+import time
 
 class Dissipation_Tensor():
 
-    def __init__(self, kossakowski_type, complex_structure_constants):
+    def __init__(self, kossakowski_type, complex_structure_constants, ):
 
         if kossakowski_type.lower() == "general":
             self._kossakowski_type =  kossakowski_type.lower()
@@ -17,8 +18,8 @@ class Dissipation_Tensor():
         self._complex_structure_constants = complex_structure_constants
         self._size = len(complex_structure_constants) 
         self._antisymmetric_structure_constants = np.real(complex_structure_constants)
-        
         self._tensor =  self.build_general_tensor()
+
 
     @property 
     def tensor(self):
@@ -47,28 +48,31 @@ class Dissipation_Tensor():
         
     
     def build_general_tensor(self):
+        size = self._size
+        complex_structure_constants = self._complex_structure_constants
+        antisymmetric_structure_constants = self._antisymmetric_structure_constants
         tensor = [ 
-                        [lil_matrix((self._size, self._size), dtype=complex) for _ in range(self._size)]
-                        for _ in range(self._size)
+                        [lil_matrix((size, size), dtype=complex) for _ in range(size)]
+                        for _ in range(size)
                         ]
         
-        for index_1 in range(self._size):
-            for index_2 in range(self._size):
-                for index_3 in range(self._size):
-                    for index_4 in range(self._size):
+        for index_1 in range(size):
+            for index_2 in range(size):
+                for index_3 in range(size):
+                    for index_4 in range(size):
                         value = 0
-                        for summed_index in range(self._size):
+                        for summed_index in range(size):
                             value += (
                                 (
-                                self._complex_structure_constants[index_3][summed_index,index_2]*
-                                self._antisymmetric_structure_constants[index_1][index_4, summed_index]
+                                complex_structure_constants[index_3][summed_index,index_2]*
+                                antisymmetric_structure_constants[index_1][index_4, summed_index]
                                 ) +
                                  (
-                                  np.conjugate(self._complex_structure_constants[index_4][summed_index, index_2])*
-                                  self._antisymmetric_structure_constants[index_1][index_3, summed_index]   
+                                  np.conjugate(complex_structure_constants[index_4][summed_index, index_2])*
+                                  antisymmetric_structure_constants[index_1][index_3, summed_index]   
                                  ))
                         
-                        tensor[index_1][index_2][index_3, index_4] = 0.25*value                               
+                        tensor[index_1][index_2][index_3, index_4] = 0.25*value                             
         return  tensor
 
     
