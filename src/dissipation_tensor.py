@@ -21,9 +21,7 @@ class Dissipation_Tensor():
         else:
             raise Exception("Kossakowski matrix type must be \"general\" or \"symmetric\"")  
         
-        
-  
-        
+        self.specific_atribute = 0
 
 
     @property 
@@ -33,6 +31,7 @@ class Dissipation_Tensor():
     @property 
     def kossakowski_type(self):
         return self._kossakowski_type
+    
     
     def validate_complex_structure_constants(self, complex_structure_constants):
 
