@@ -72,6 +72,7 @@ class Dissipation_Tensor():
                                   np.conjugate(complex_structure_constants[index_4][summed_index, index_2])*
                                   antisymmetric_structure_constants[index_1][index_3, summed_index]   
                                  ))
+                            
                         
                         tensor[index_1][index_2][index_3, index_4] = 0.25*value                             
         return  tensor
@@ -83,22 +84,12 @@ class Dissipation_Tensor():
         tensor = [[lil_matrix((size, size)) for _ in range(size)] for _ in range(size)]
         
         for index_1 in range(size):
-            # print(f"index_1 {index_1}")
             for index_2 in range(size):
-                # print(f"index_2 = {index_2}")
                 for index_3 in range(size):
-                    # print(f"index_3 = {index_3}")
                     for index_4 in range(size):
-                        # print(f"index_4 = {index_4}")
                         value = 0
                         for summed_index in range(size):
-                            # print(f"summed_index = {summed_index}")
-                            # print(antisymmetric_structure_constants[index_1][index_4, summed_index])
-                            # print(antisymmetric_structure_constants[index_2][index_3,summed_index])
                             value += (antisymmetric_structure_constants[index_1][index_4, summed_index])*(antisymmetric_structure_constants[index_2][index_3,summed_index]) 
-                        
-                        #if value != 0:
-                            #print(f"value = {value}, j = {index_1}, k = {index_2}, l = {index_3}, m={index_4}")
                         
                         tensor[index_1][index_2][index_3, index_4] = 0.5*value                             
         return  tensor
