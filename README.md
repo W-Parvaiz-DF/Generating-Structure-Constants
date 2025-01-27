@@ -11,7 +11,7 @@
 
 - T_2 tensor validation didnt work when using isInstance(), was likely the way dissipation_tensor was being imported, may need to resolve using setup.py however, I did a cheap fix. 
 
-
+- where you have list replace with numpy arrays/ use np.zeros instead of sparse matrices to see if preallocating increases speed up
 
 
   
