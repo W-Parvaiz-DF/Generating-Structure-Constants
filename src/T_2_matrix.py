@@ -81,6 +81,9 @@ class T_2_Matrix():
         return reduced_symmetric_matrix
 
 
+    def isfullrank(self):
+        min_value = min(self.shape)
+        return self.rank == min_value
 
 
 
