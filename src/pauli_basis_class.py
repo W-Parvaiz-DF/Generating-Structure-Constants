@@ -66,10 +66,10 @@ class Pauli_Basis():
             output_list.pop(0)
             return output_list
         else: 
-            number_of_tensor_products = int(np.log2(self.dimension)) - 1
+            #number_of_tensor_products = int(np.log2(self.dimension)) - 1
             output_list = self.recursive_tensor_product_list(list_1= self.building_block_matrices,
                                                         list_2= self.building_block_matrices,
-                                                        number_of_tensor_products= number_of_tensor_products)
+                                                        number_of_tensor_products= int(np.log2(self.dimension)) - 1)
             output_list.pop(0)
             return output_list
             
